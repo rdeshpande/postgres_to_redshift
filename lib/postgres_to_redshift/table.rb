@@ -32,6 +32,8 @@ class PostgresToRedshift
     def columns=(column_definitions = [])
       @columns = column_definitions.map do |column_definition|
         Column.new(attributes: column_definition)
+      end.select do |column|
+        column.name !~ /#{ENV['POSTGRES_TO_REDSHIFT_IGNORE_COLUMN_REGEX']}/
       end
     end
 
